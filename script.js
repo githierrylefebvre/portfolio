@@ -60,12 +60,15 @@ document.addEventListener("DOMContentLoaded", function() {
             const container = video.parentElement;
 
             if (entry.isIntersecting) {
-                if (!video.src) {
+    
+                if (!video.src && video.dataset.src) {
                     video.src = video.dataset.src;
                     video.load();
                 }
 
+                video.currentTime = 0; 
                 video.play().catch(() => {});
+
 
                 video.oncanplay = () => {
                     video.classList.add('ready');
@@ -73,13 +76,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 };
             } else {
 
-                if (!video.classList.contains('zoomed')) {
+                if (!video.classList.contains('zoomed') && !container.classList.contains('zoomed')) {
                     video.pause();
+                    video.currentTime = 0; 
                 }
             }
         });
     }, { threshold: 0.2 }); 
-
 
     document.querySelectorAll('.lazy-video').forEach(v => vObserver.observe(v));
 });
